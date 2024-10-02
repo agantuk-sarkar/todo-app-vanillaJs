@@ -5,121 +5,173 @@ const url = "https://jsonplaceholder.typicode.com/todos";
 const user_id_container = document.querySelector(".user-id-container");
 
 // function to fetch todos details
-const getTodosData = async ()=>{
-    try{
-        const responseObject = await fetch(url);
-        if(responseObject.ok && responseObject.status === 200){
-            const todosData = await responseObject.json();
-            // console.log("todosData:",todosData);
-            storingUserIdsInObject(todosData);
-        } else {
-            throw new Error("Invalid Url");
-        }
-    } catch(error){
-        console.log("error:",error);
+const getTodosData = async () => {
+  try {
+    const responseObject = await fetch(url);
+    if (responseObject.ok && responseObject.status === 200) {
+      const todosData = await responseObject.json();
+      // console.log("todosData:",todosData);
+      storingUserIdsInObject(todosData);
+    } else {
+      throw new Error("Invalid Url");
     }
-}
-getTodosData()
+  } catch (error) {
+    console.log("error:", error);
+  }
+};
+getTodosData();
 
 // function to store userIds
-const storingUserIdsInObject = (todosData)=>{
+const storingUserIdsInObject = (todosData) => {
+  let userIdsObject = {};
+  // userIdsObject= {
+  //     1: [{},{},{}],
+  //     2: [{},{},{}],
+  //     3: [{},{},{}],
+  // }
 
-    let userIdsObject = {};
-    // userIdsObject= {
-//     1: [{},{},{}],
-//     2: [{},{},{}],
-//     3: [{},{},{}],
-// }
+  todosData?.forEach((users) => {
+    if (!userIdsObject[users.userId]) {
+      userIdsObject[users.userId] = [];
+      userIdsObject[users.userId].push(users);
+    } else {
+      userIdsObject[users.userId].push(users);
+    }
+  });
 
-    todosData?.forEach((users)=>{
-        if(!userIdsObject[users.userId]){
-            userIdsObject[users.userId] = [];
-            userIdsObject[users.userId].push(users);
-        } else {
-            userIdsObject[users.userId].push(users);
-        }
-    });
-
-    // console.log("userIdsObject:",userIdsObject);
-    displayUserIds(userIdsObject);
-}
+  // console.log("userIdsObject:",userIdsObject);
+  displayUserIds(userIdsObject);
+};
 
 // function to display each user in UI
-const displayUserIds = (userIdsObject)=>{
+const displayUserIds = (userIdsObject) => {
+  for (let key in userIdsObject) {
+    const user_div = document.createElement("div");
+    user_div.textContent = `User - ${key}`;
+    // adding click event for each user div
+    user_div.addEventListener("click", () => {
+      displayModal(userIdsObject[key], key);
+    });
 
-    for(let key in userIdsObject){
-
-        const user_div = document.createElement("div");
-        user_div.textContent = `User - ${key}`;
-        // adding click event for each user div
-        user_div.addEventListener("click",()=>{
-            displayModal(userIdsObject[key],key);
-        });
-
-        user_id_container.append(user_div);
-    }
-}
+    user_id_container.append(user_div);
+  }
+};
 
 // function to display modal after clicking on each user
-const displayModal = (selectedUserId,key)=>{
-    const modal_mainDiv = document.createElement("div");
-    modal_mainDiv.classList.add("modal-mainDiv");
+const displayModal = (selectedUserId, key) => {
+  // console.log("selectedUser:",selectedUserId);
+  const modal_mainDiv = document.createElement("div");
+  modal_mainDiv.classList.add("modal-mainDiv");
 
-    // modal content which is inside modal main container
-    const modal_content_div = document.createElement("div");
-    modal_content_div.classList.add("modal-content-div");
+  // modal content which is inside modal main container
+  const modal_content_div = document.createElement("div");
+  modal_content_div.classList.add("modal-content-div");
 
-    // there will be first, second and third different boxes which is inside modal content div
-    const first_modalDiv = document.createElement("div");
-    first_modalDiv.classList.add("first-modal-div");
+  // there will be first, second and third different boxes which is inside modal content div
+  const first_modalDiv = document.createElement("div");
+  first_modalDiv.classList.add("first-modal-div");
 
-    // first modal div will have one close button and particular user id shown
-    const user_id_text = document.createElement("p");
-    user_id_text.textContent = `User: ${key}`;
+  // the second modal div will have three tabs for all todos, completed todos and pending todos
+  const second_modalDiv = document.createElement("div");
+  second_modalDiv.classList.add("second-modal-div");
 
-    const close_button = document.createElement("div");
-    close_button.classList.add("close-button");
-    close_button.textContent = "Close";
-    // add click event for close button
-    close_button.addEventListener("click",()=>{
-        modal_mainDiv.style.display = "none";
-    })
+  // the third modal div will contain content according to the tabs clicked from all todos, completed todos and pending todos
+  const third_modal_div = document.createElement("div");
+  third_modal_div.classList.add("third-modal-div");
 
-    // appending userid text and close button inside first modal div
-    first_modalDiv.append(user_id_text,close_button);
+  // first modal div will have one close button and particular user id shown
+  const user_id_text = document.createElement("p");
+  user_id_text.textContent = `User: ${key}`;
 
-    // the second modal div will have three tabs for all todos, completed todos and pending todos
-    const second_modalDiv = document.createElement("div");
-    second_modalDiv.classList.add("second-modal-div");
+  const close_button = document.createElement("div");
+  close_button.classList.add("close-button");
+  close_button.textContent = "Close";
+  // add click event for close button
+  close_button.addEventListener("click", () => {
+    modal_mainDiv.style.display = "none";
+  });
 
-    // all todos tab
-    const all_todos_tab = document.createElement("div");
-    all_todos_tab.classList.add("all-todos-tab");
-    all_todos_tab.textContent = "All Todos";
+  // appending userid text and close button inside first modal div
+  first_modalDiv.append(user_id_text, close_button);
 
-    // completed todos tab
-    const completed_todos = document.createElement("div");
-    completed_todos.classList.add("completed-todos");
-    completed_todos.textContent = "Completed";
+  // all todos tab
+  const all_todos_tab = document.createElement("div");
+  all_todos_tab.classList.add("all-todos-tab");
+  all_todos_tab.textContent = "All Todos";
 
-    // pending todos tab
-    const pending_todos = document.createElement("div");
-    pending_todos.classList.add("pending-todos");
-    pending_todos.textContent = "Pending";
+  // completed todos tab
+  const completed_todos = document.createElement("div");
+  completed_todos.classList.add("completed-todos");
+  completed_todos.textContent = "Completed";
+  // ading click event for completed todos tab
+  completed_todos.addEventListener("click", () => {
+    selectedUserId?.forEach((completedUsers, ind) => {
+      //   third_modal_div.innerHTML = "";
 
-    // appending all, complete and pending todos inside second modal div
-    second_modalDiv.append(all_todos_tab,completed_todos,pending_todos);
+      const { userId, title, completed } = getObj(completedUsers);
 
-    // the third modal div will contain content according to the tabs clicked from all todos, completed todos and pending todos
-    const third_modal_div = document.createElement("div");
-    third_modal_div.classList.add("third-modal-div");
+      const completedUser_div = document.createElement("div");
+      completedUser_div.classList.add("completed-user-div");
 
-    // appending first modal, second modal, third modal div inside modal content div
-    modal_content_div.append(first_modalDiv,second_modalDiv,third_modal_div);
+      if (completed) {
+        const completed_user_text = document.createElement("p");
+        completed_user_text.classList.add("completed_user_text");
+        completed_user_text.textContent = `${ind + 1}. ${title}`;
+        completedUser_div.append(completed_user_text);
+      }
+      third_modal_div.append(completedUser_div);
+    });
+  });
 
-    // appending modal content div inside modal main container
-    modal_mainDiv.append(modal_content_div);
+  // pending todos tab
+  const pending_todos = document.createElement("div");
+  pending_todos.classList.add("pending-todos");
+  pending_todos.textContent = "Pending";
 
-    document.querySelector(".main-container").append(modal_mainDiv);
+  // appending all, complete and pending todos inside second modal div
+  second_modalDiv.append(all_todos_tab, completed_todos, pending_todos);
 
-}
+  //   this section is creating all todos list of selected user by default
+  selectedUserId?.forEach((user, ind) => {
+    // using destructuring of objects
+    const { userId, title, completed } = getObj(user);
+
+    const eachUser_div = document.createElement("div");
+    eachUser_div.classList.add("each-user-div");
+
+    if (completed) {
+      const each_user_text = document.createElement("p");
+      each_user_text.classList.add("each-user-text");
+      each_user_text.innerHTML = `${
+        ind + 1
+      }. ${title} <span class="completed-spanTag">Completed</span>`;
+      eachUser_div.append(each_user_text);
+    } else {
+      const each_user_text = document.createElement("p");
+      each_user_text.classList.add("each-user-text");
+      each_user_text.innerHTML = `${
+        ind + 1
+      }. ${title} <span class="pending-spanTag">Pending</span>`;
+      eachUser_div.append(each_user_text);
+    }
+
+    third_modal_div.append(eachUser_div);
+  });
+
+  // appending first modal, second modal, third modal div inside modal content div
+  modal_content_div.append(first_modalDiv, second_modalDiv, third_modal_div);
+
+  // appending modal content div inside modal main container
+  modal_mainDiv.append(modal_content_div);
+
+  document.querySelector(".main-container").append(modal_mainDiv);
+};
+
+// function which will return object like userId, title and completed
+const getObj = (obj) => {
+  return {
+    userId: obj.userId,
+    title: obj.title,
+    completed: obj.completed,
+  };
+};

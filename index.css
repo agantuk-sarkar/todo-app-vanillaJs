@@ -112,8 +112,50 @@
  }
 
  .third-modal-div{
-    border:2px solid green;
+    border:2px solid red;
     height:23.1rem;
     width:100%;
     margin-top:0.5rem;
+    display:flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    padding:1%;
+ }
+
+ .each-user-div{
+   border:1px solid blue;
+   height:18%;
+   width:100%;
+   margin-bottom:0.1rem;
+   background-color: rgb(240, 237, 237);
+   border-radius: 7px;
+   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+   /* position: relative; */
+ }
+
+ .each-user-text{
+   margin-top:16px;
+ }
+
+ .completed-spanTag{
+   /* border:1px solid green; */
+   display:flex;
+   justify-content:end;
+   color:green;
+ }
+
+ .pending-spanTag{
+   display:flex;
+   justify-content:end;
+   color:red;
+ }
+
+ .completed-user-div{
+   border:1px solid blue;
+   height:18%;
+   width:100%;
+   margin-bottom:0.1rem;
+   background-color: rgb(240, 237, 237);
+   border-radius: 7px;
+   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
  }
