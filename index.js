@@ -1,0 +1,125 @@
+// todo api
+const url = "https://jsonplaceholder.typicode.com/todos";
+
+// getting html elements into js
+const user_id_container = document.querySelector(".user-id-container");
+
+// function to fetch todos details
+const getTodosData = async ()=>{
+    try{
+        const responseObject = await fetch(url);
+        if(responseObject.ok && responseObject.status === 200){
+            const todosData = await responseObject.json();
+            // console.log("todosData:",todosData);
+            storingUserIdsInObject(todosData);
+        } else {
+            throw new Error("Invalid Url");
+        }
+    } catch(error){
+        console.log("error:",error);
+    }
+}
+getTodosData()
+
+// function to store userIds
+const storingUserIdsInObject = (todosData)=>{
+
+    let userIdsObject = {};
+    // userIdsObject= {
+//     1: [{},{},{}],
+//     2: [{},{},{}],
+//     3: [{},{},{}],
+// }
+
+    todosData?.forEach((users)=>{
+        if(!userIdsObject[users.userId]){
+            userIdsObject[users.userId] = [];
+            userIdsObject[users.userId].push(users);
+        } else {
+            userIdsObject[users.userId].push(users);
+        }
+    });
+
+    // console.log("userIdsObject:",userIdsObject);
+    displayUserIds(userIdsObject);
+}
+
+// function to display each user in UI
+const displayUserIds = (userIdsObject)=>{
+
+    for(let key in userIdsObject){
+
+        const user_div = document.createElement("div");
+        user_div.textContent = `User - ${key}`;
+        // adding click event for each user div
+        user_div.addEventListener("click",()=>{
+            displayModal(userIdsObject[key],key);
+        });
+
+        user_id_container.append(user_div);
+    }
+}
+
+// function to display modal after clicking on each user
+const displayModal = (selectedUserId,key)=>{
+    const modal_mainDiv = document.createElement("div");
+    modal_mainDiv.classList.add("modal-mainDiv");
+
+    // modal content which is inside modal main container
+    const modal_content_div = document.createElement("div");
+    modal_content_div.classList.add("modal-content-div");
+
+    // there will be first, second and third different boxes which is inside modal content div
+    const first_modalDiv = document.createElement("div");
+    first_modalDiv.classList.add("first-modal-div");
+
+    // first modal div will have one close button and particular user id shown
+    const user_id_text = document.createElement("p");
+    user_id_text.textContent = `User: ${key}`;
+
+    const close_button = document.createElement("div");
+    close_button.classList.add("close-button");
+    close_button.textContent = "Close";
+    // add click event for close button
+    close_button.addEventListener("click",()=>{
+        modal_mainDiv.style.display = "none";
+    })
+
+    // appending userid text and close button inside first modal div
+    first_modalDiv.append(user_id_text,close_button);
+
+    // the second modal div will have three tabs for all todos, completed todos and pending todos
+    const second_modalDiv = document.createElement("div");
+    second_modalDiv.classList.add("second-modal-div");
+
+    // all todos tab
+    const all_todos_tab = document.createElement("div");
+    all_todos_tab.classList.add("all-todos-tab");
+    all_todos_tab.textContent = "All Todos";
+
+    // completed todos tab
+    const completed_todos = document.createElement("div");
+    completed_todos.classList.add("completed-todos");
+    completed_todos.textContent = "Completed";
+
+    // pending todos tab
+    const pending_todos = document.createElement("div");
+    pending_todos.classList.add("pending-todos");
+    pending_todos.textContent = "Pending";
+
+    // appending all, complete and pending todos inside second modal div
+    second_modalDiv.append(all_todos_tab,completed_todos,pending_todos);
+
+    // the third modal div will contain content according to the tabs clicked from all todos, completed todos and pending todos
+    const third_modal_div = document.createElement("div");
+    third_modal_div.classList.add("third-modal-div");
+
+    // appending first modal, second modal, third modal div inside modal content div
+    modal_content_div.append(first_modalDiv,second_modalDiv,third_modal_div);
+
+    // appending modal content div inside modal main container
+    modal_mainDiv.append(modal_content_div);
+
+    document.querySelector(".main-container").append(modal_mainDiv);
+
+}
