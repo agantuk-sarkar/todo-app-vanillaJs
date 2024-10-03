@@ -98,6 +98,39 @@ const displayModal = (selectedUserId, key) => {
   const all_todos_tab = document.createElement("div");
   all_todos_tab.classList.add("all-todos-tab");
   all_todos_tab.textContent = "All Todos";
+  
+  // adding click event for all todo tab
+  all_todos_tab.addEventListener("click",()=>{
+
+    third_modal_div.innerHTML = "";
+
+    selectedUserId?.forEach((user, ind) => {
+      // using destructuring of objects
+      const { userId, title, completed } = getObj(user);
+  
+      const eachUser_div = document.createElement("div");
+      eachUser_div.classList.add("each-user-div");
+  
+      if (completed) {
+        const each_user_text = document.createElement("p");
+        each_user_text.classList.add("each-user-text");
+        each_user_text.innerHTML = `${
+          ind + 1
+        }. ${title} <span class="completed-spanTag">Completed</span>`;
+        eachUser_div.append(each_user_text);
+      } else {
+        const each_user_text = document.createElement("p");
+        each_user_text.classList.add("each-user-text");
+        each_user_text.innerHTML = `${
+          ind + 1
+        }. ${title} <span class="pending-spanTag">Pending</span>`;
+        eachUser_div.append(each_user_text);
+      }
+  
+      third_modal_div.append(eachUser_div);
+    });
+
+  })
 
   // completed todos tab
   const completed_todos = document.createElement("div");
@@ -105,9 +138,10 @@ const displayModal = (selectedUserId, key) => {
   completed_todos.textContent = "Completed";
   // ading click event for completed todos tab
   completed_todos.addEventListener("click", () => {
-    selectedUserId?.forEach((completedUsers, ind) => {
-      //   third_modal_div.innerHTML = "";
+    third_modal_div.innerHTML = "";
 
+    selectedUserId?.forEach((completedUsers, ind) => {
+   
       const { userId, title, completed } = getObj(completedUsers);
 
       const completedUser_div = document.createElement("div");
@@ -118,8 +152,8 @@ const displayModal = (selectedUserId, key) => {
         completed_user_text.classList.add("completed_user_text");
         completed_user_text.textContent = `${ind + 1}. ${title}`;
         completedUser_div.append(completed_user_text);
+        third_modal_div.append(completedUser_div);
       }
-      third_modal_div.append(completedUser_div);
     });
   });
 
@@ -127,6 +161,27 @@ const displayModal = (selectedUserId, key) => {
   const pending_todos = document.createElement("div");
   pending_todos.classList.add("pending-todos");
   pending_todos.textContent = "Pending";
+
+  // adding click event for pending todos tab
+  pending_todos.addEventListener("click",()=>{
+    third_modal_div.innerHTML = "";
+
+    selectedUserId?.forEach((pendingUsers, ind) => {
+   
+      const { userId, title, completed } = getObj(pendingUsers);
+
+      const pendingUser_div = document.createElement("div");
+      pendingUser_div.classList.add("pending-user-div");
+
+      if (!completed) {
+        const pending_user_text = document.createElement("p");
+        pending_user_text.textContent = `${ind + 1}. ${title}`;
+        pendingUser_div.append(pending_user_text);
+        
+        third_modal_div.append(pendingUser_div);
+      }
+    });
+  })
 
   // appending all, complete and pending todos inside second modal div
   second_modalDiv.append(all_todos_tab, completed_todos, pending_todos);

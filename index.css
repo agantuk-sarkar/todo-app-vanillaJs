@@ -152,9 +152,23 @@
 
  .completed-user-div{
    border:1px solid blue;
-   height:18%;
+   height:10%;
    width:100%;
    margin-bottom:0.1rem;
+   background-color: rgb(240, 237, 237);
+   border-radius: 7px;
+   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+ }
+
+ .completed_user_text{
+   text-decoration: line-through;
+ }
+
+ .pending-user-div{
+   border:1px solid blue;
+   height:14%;
+   width:100%;
+   margin-bottom:0.2rem;
    background-color: rgb(240, 237, 237);
    border-radius: 7px;
    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
