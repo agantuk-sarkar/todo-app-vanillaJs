@@ -149,6 +149,8 @@ const displayModal = (selectedUserId, key) => {
 
     third_modal_div.innerHTML = "";
 
+    let completedIndex = 0;
+
     selectedUserId?.forEach((completedUsers, ind) => {
       const { userId, title, completed } = getObj(completedUsers);
 
@@ -156,9 +158,10 @@ const displayModal = (selectedUserId, key) => {
       completedUser_div.classList.add("completed-user-div");
 
       if (completed) {
+        completedIndex++;
         const completed_user_text = document.createElement("p");
         completed_user_text.classList.add("completed_user_text");
-        completed_user_text.textContent = `${ind + 1}. ${title}`;
+        completed_user_text.textContent = `${completedIndex}. ${title}`;
         completedUser_div.append(completed_user_text);
         third_modal_div.append(completedUser_div);
       }
@@ -179,15 +182,20 @@ const displayModal = (selectedUserId, key) => {
 
     third_modal_div.innerHTML = "";
 
-    selectedUserId?.forEach((pendingUsers, ind) => {
+    let pendingIndex = 0;
+
+
+    selectedUserId?.forEach((pendingUsers) => {
+
       const { userId, title, completed } = getObj(pendingUsers);
 
       const pendingUser_div = document.createElement("div");
       pendingUser_div.classList.add("pending-user-div");
 
       if (!completed) {
+        pendingIndex++;
         const pending_user_text = document.createElement("p");
-        pending_user_text.textContent = `${ind + 1}. ${title}`;
+        pending_user_text.textContent = `${pendingIndex}. ${title}`;
         pendingUser_div.append(pending_user_text);
 
         third_modal_div.append(pendingUser_div);
