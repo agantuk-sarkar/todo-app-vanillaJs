@@ -98,19 +98,23 @@ const displayModal = (selectedUserId, key) => {
   const all_todos_tab = document.createElement("div");
   all_todos_tab.classList.add("all-todos-tab");
   all_todos_tab.textContent = "All Todos";
-  
+
   // adding click event for all todo tab
-  all_todos_tab.addEventListener("click",()=>{
+  all_todos_tab.addEventListener("click", () => {
+
+    all_todos_tab.classList.add("tab-background");
+    completed_todos.classList.remove("tab-background");
+    pending_todos.classList.remove("tab-background");
 
     third_modal_div.innerHTML = "";
 
     selectedUserId?.forEach((user, ind) => {
       // using destructuring of objects
       const { userId, title, completed } = getObj(user);
-  
+
       const eachUser_div = document.createElement("div");
       eachUser_div.classList.add("each-user-div");
-  
+
       if (completed) {
         const each_user_text = document.createElement("p");
         each_user_text.classList.add("each-user-text");
@@ -126,22 +130,26 @@ const displayModal = (selectedUserId, key) => {
         }. ${title} <span class="pending-spanTag">Pending</span>`;
         eachUser_div.append(each_user_text);
       }
-  
+
       third_modal_div.append(eachUser_div);
     });
-
-  })
+  });
 
   // completed todos tab
   const completed_todos = document.createElement("div");
   completed_todos.classList.add("completed-todos");
   completed_todos.textContent = "Completed";
-  // ading click event for completed todos tab
+  // adding click event for completed todos tab
   completed_todos.addEventListener("click", () => {
+
+    completed_todos.classList.add("tab-background");
+    all_todos_tab.classList.remove("tab-background");
+    pending_todos.classList.remove("tab-background");
+
+
     third_modal_div.innerHTML = "";
 
     selectedUserId?.forEach((completedUsers, ind) => {
-   
       const { userId, title, completed } = getObj(completedUsers);
 
       const completedUser_div = document.createElement("div");
@@ -163,11 +171,15 @@ const displayModal = (selectedUserId, key) => {
   pending_todos.textContent = "Pending";
 
   // adding click event for pending todos tab
-  pending_todos.addEventListener("click",()=>{
+  pending_todos.addEventListener("click", () => {
+
+    pending_todos.classList.add("tab-background");
+    all_todos_tab.classList.remove("tab-background");
+    completed_todos.classList.remove("tab-background");
+
     third_modal_div.innerHTML = "";
 
     selectedUserId?.forEach((pendingUsers, ind) => {
-   
       const { userId, title, completed } = getObj(pendingUsers);
 
       const pendingUser_div = document.createElement("div");
@@ -177,17 +189,20 @@ const displayModal = (selectedUserId, key) => {
         const pending_user_text = document.createElement("p");
         pending_user_text.textContent = `${ind + 1}. ${title}`;
         pendingUser_div.append(pending_user_text);
-        
+
         third_modal_div.append(pendingUser_div);
       }
     });
-  })
+  });
 
   // appending all, complete and pending todos inside second modal div
   second_modalDiv.append(all_todos_tab, completed_todos, pending_todos);
 
-  //   this section is creating all todos list of selected user by default
+  all_todos_tab.classList.add("tab-background");
+
+  //  this section is creating all todos list of selected user by default
   selectedUserId?.forEach((user, ind) => {
+
     // using destructuring of objects
     const { userId, title, completed } = getObj(user);
 

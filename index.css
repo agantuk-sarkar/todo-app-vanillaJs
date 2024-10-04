@@ -102,13 +102,17 @@
  .second-modal-div>div{
     border:1px solid grey;
     height:100%;
-    width:30%;
-    background-color: rgb(220, 216, 216);
+    flex:1;
+    /* background-color: rgb(220, 216, 216); */
     display:flex;
     justify-content:center;
     align-items:center;
     font-weight:700;
     cursor:pointer;
+ }
+ .completed-todos,.all-todos-tab,.pending-todos{
+   background-color: rgb(220, 216, 216);
+
  }
 
  .third-modal-div{
@@ -142,12 +146,14 @@
    display:flex;
    justify-content:end;
    color:green;
+   user-select:none;
  }
 
  .pending-spanTag{
    display:flex;
    justify-content:end;
    color:red;
+   user-select:none;
  }
 
  .completed-user-div{
@@ -173,3 +179,39 @@
    border-radius: 7px;
    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
  }
+
+ .tab-background{
+   background-color: darkgray;
+ }
+
+ ::-webkit-scrollbar{
+   width:5px;
+ }
+
+ ::-webkit-scrollbar-thumb{
+   background-color: lightgray;
+   border-radius:10px;
+ }
+
+ @media screen and (min-width:320px) and (max-width:767px){
+   .user-id-container{
+      grid-template-columns: repeat(2,1fr);
+   }
+   .modal-content-div{
+      width:100%;
+   }
+   .close-button{
+      margin-right:7px;
+      width:17%;
+   }
+ }
+
+ @media screen and (min-width: 768px) and (max-width:1024px){
+   .user-id-container{
+      grid-template-columns: repeat(3,1fr);
+   }
+   .modal-content-div{
+      width:90%;
+   }
+ }
+
