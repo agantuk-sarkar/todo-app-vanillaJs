@@ -1,6 +1,10 @@
 // todo api
 const url = "https://jsonplaceholder.typicode.com/todos";
 
+// index for completed and pending tab
+let completedIndex = 0;
+let pendingIndex = 0;
+
 // getting html elements into js
 const user_id_container = document.querySelector(".user-id-container");
 
@@ -149,8 +153,6 @@ const displayModal = (selectedUserId, key) => {
 
     third_modal_div.innerHTML = "";
 
-    let completedIndex = 0;
-
     selectedUserId?.forEach((completedUsers, ind) => {
       const { userId, title, completed } = getObj(completedUsers);
 
@@ -181,9 +183,6 @@ const displayModal = (selectedUserId, key) => {
     completed_todos.classList.remove("tab-background");
 
     third_modal_div.innerHTML = "";
-
-    let pendingIndex = 0;
-
 
     selectedUserId?.forEach((pendingUsers) => {
 
